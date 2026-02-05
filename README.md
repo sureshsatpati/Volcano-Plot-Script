@@ -1,27 +1,27 @@
 # Volcano-Plot-Script
 Script to plot volcano plot for DEG analysis
 
-# Load required libraries
+ Load required libraries
 library(ggplot2)
 library(dplyr)
 
-# Example: DESeq2 results dataframe
-# res <- results(dds)
-# res_df <- as.data.frame(res)
-# res_df$gene <- rownames(res_df)
+ Example: DESeq2 results dataframe
+ res <- results(dds)
+ res_df <- as.data.frame(res)
+ res_df$gene <- rownames(res_df)
 
-# If already have a DEG table, load it
-# res_df <- read.csv("DEG_results.csv")
+ If already have a DEG table, load it
+ res_df <- read.csv("DEG_results.csv")
 
-# Remove NA values
+ Remove NA values
 res_df <- res_df %>%
   filter(!is.na(padj), !is.na(log2FoldChange))
 
-# Define significance thresholds
+ Define significance thresholds
 logFC_cutoff <- 1
 padj_cutoff  <- 0.05
 
-# Add DEG classification
+ Add DEG classification
 res_df <- res_df %>%
   mutate(
     DEG_status = case_when(
@@ -31,7 +31,7 @@ res_df <- res_df %>%
     )
   )
 
-# Volcano plot
+ Volcano plot
 ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj))) +
   geom_point(aes(color = DEG_status), alpha = 0.7, size = 1.5) +
   scale_color_manual(values = c(
